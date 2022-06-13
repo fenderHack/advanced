@@ -1,0 +1,87 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+targetNamespace="https://www.w3schools.com"
+xmlns="https://www.w3schools.com"
+elementFormDefault="qualified">
+    <xs:complexType name="personinfo">
+        <xs:sequence>
+            <xs:element name="firstname" type="xs:string">KONAN</xs:element>
+            <xs:element name="lastname" type="xs:string">LIONEL</xs:element>
+        </xs:sequence>
+        <xs:sequence>
+            <xs:element name="firstname" type="xs:string">KOFFI</xs:element>
+            <xs:element name="lastname" type="xs:string">ANGE</xs:element>
+        </xs:sequence>
+        <xs:sequence>
+            <xs:element name="firstname" type="xs:string">YAO</xs:element>
+            <xs:element name="lastname" type="xs:string">ARNAUD</xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="personinfo">
+        <xs:sequence>
+            <xs:element name="firstname" type="xs:string">KONAN</xs:element>
+            <xs:element name="lastname" type="xs:string">GILLES</xs:element>
+        </xs:sequence>
+        <xs:sequence>
+            <xs:element name="firstname" type="xs:string">ANGE</xs:element>
+            <xs:element name="lastname" type="xs:string">PEREZ</xs:element>
+        </xs:sequence>
+        <xs:sequence>
+            <xs:element name="firstname" type="xs:string">SERGE</xs:element>
+            <xs:element name="lastname" type="xs:string">KONAN</xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="personinfo">
+        <xs:sequence>
+            <xs:element name="firstname" type="xs:string">AMENA</xs:element>
+            <xs:element name="lastname" type="xs:string">LYDIE</xs:element>
+        </xs:sequence>
+        <xs:sequence>
+            <xs:element name="firstname" type="xs:string">GRACE</xs:element>
+            <xs:element name="lastname" type="xs:string">KONAN</xs:element>
+        </xs:sequence>
+        <xs:sequence>
+            <xs:element name="firstname" type="xs:string">AYA</xs:element>
+            <xs:element name="lastname" type="xs:string">ANGE</xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="fullpersoninfo">
+        <xs:complexContent>
+            <xs:extension base="personinfo">
+                <xs:sequence>
+                    <xs:element name="address" type="xs:string">94230</xs:element>
+                    <xs:element name="city" type="xs:string">CACHAN</xs:element>
+                    <xs:element name="country" type="xs:string">FRANCE</xs:element>
+                </xs:sequence>
+                <xs:sequence>
+                    <xs:element name="address" type="xs:string">94232</xs:element>
+                    <xs:element name="city" type="xs:string">SEINE</xs:element>
+                    <xs:element name="country" type="xs:string">BORDEAUX</xs:element>
+                </xs:sequence>
+                <xs:sequence>
+                    <xs:element name="address" type="xs:string">94235</xs:element>
+                    <xs:element name="city" type="xs:string">ISSY</xs:element>
+                    <xs:element name="country" type="xs:string">MARSEILLE</xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+        <xs:complexContent>
+            <xs:extension base="personinfo">
+                <xs:sequence>
+                    <xs:element name="address" type="xs:string">9423zz0</xs:element>
+                    <xs:element name="city" type="xs:string">CACHANss</xs:element>
+                    <xs:element name="country" type="xs:string">FRANssCE</xs:element>
+                </xs:sequence>
+                <xs:sequence>
+                    <xs:element name="address" type="xs:string">9423dd2</xs:element>
+                    <xs:element name="city" type="xs:string">SEINssssE</xs:element>
+                    <xs:element name="country" type="xs:string">BORssDEAUX</xs:element>
+                </xs:sequence>
+                <xs:sequence>
+                    <xs:element name="address" type="xs:string">942ss35</xs:element>
+                    <xs:element name="city" type="xs:string">ISsSY</xs:element>
+                    <xs:element name="country" type="xs:string">MARSssEILLE</xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+</xs:schema>

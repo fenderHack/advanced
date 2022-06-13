@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="filter-map-object-flowFlow" doc:id="3259436e-5b71-4ec2-b99c-fb2f1bf52555" >
+		<set-payload value='#[{&#10;  "list": [&#10;    {&#10;      "nom": "konan",&#10;      "prenom": "lionel",&#10;      "age": 31&#10;    },{&#10;      "nom": "konan",&#10;      "prenom": "grace",&#10;      "age": 13&#10;    },{&#10;      "nom": "serge",&#10;      "prenom": "serge",&#10;      "age": 29&#10;    },{&#10;      "nom": "ange",&#10;      "prenom": "perez",&#10;      "age": 32&#10;    },{&#10;      "nom": "kouadio",&#10;      "prenom": "ano",&#10;      "age": 28&#10;    }&#10;  ]&#10;}]' doc:name="Set Payload" doc:id="7263c653-29f0-4ac0-92cf-ab4d961ee00e" />
+		<ee:transform doc:name="complex json to xml" doc:id="52fba903-bbed-4cab-97d4-96528c483fa7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+lists @(root: "ok", test: "yes"): {(
+    payload.list 
+    filter ((item, index) -> item.age > 20 )
+     map ((ite, idx) -> list @(index: idx): (ite 
+        filterObject ((value, key, index) -> (key ~= "nom") or (key ~= "age") or (key ~= "prenom")) 
+        
+        mapObject ((value, key, index) -> (
+            {
+                (upper(key)) @(rang: index): value
+            }
+        ) ))
+     )
+)}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="filter-map-object-flowFlow1" doc:id="9c62c9c8-f56c-4ef1-96fb-3e8ac2b16683" >
+		<ee:transform doc:name="Transform Message" doc:id="19d28413-78f2-4939-98c0-4bd050b7a311" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+var maList = readUrl("classpath://examples/Xml.xml","application/xml")
+
+---
+listes: {
+    "root": maList.lists.@root,
+    "test": maList.lists.@test,
+    "list": maList.lists.*list filter ((it, idx) -> (it.AGE > 25) ) 
+map ((item, index) ->
+    "list__$index": 
+ item mapObject ((value, key, index) -> 
+( {
+    (lower(key)): value,
+    "index__$(key)__$(index)": "$(index)"
+})
+) )
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="filter-map-object-flowFlow2" doc:id="2c9384d2-7560-43eb-bd5a-d2b3e7b034f8" >
+		<ee:transform doc:name="Transform Message" doc:id="5f009420-b050-4143-bb9b-6f0b4b0d35c9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+
+var maList = readUrl("classpath://examples/complexXml.xml","application/xml")
+
+output application/json
+---
+{
+	"root_Attri": maList.schema.@,
+	"root_Xmlns": maList.schema.#,
+	"complexType_Name": maList..*complexType.@name,
+	"complexType_PersonInfo": flatten((maList..*complexType filter ((i, id) -> i.@name == "personinfo") map ((it, idx) ->
+    flatten(it.*sequence) map ((item, index) -> item mapObject ((value, key, index) -> (key.@name): value )) ))),
+    "complexType_FullPersonInfo": flatten(maList..*complexType filter ((i, ix) -> i.@name == "fullpersoninfo") map ((item, index) -> item..*sequence map ((item2, index2) -> item2 mapObject ((v, k, idx) -> (k.@name): v) )))
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<lists root="ok" test="yes">
+    <list index="0">
+        <NOM rang="0">konan</NOM>
+        <PRENOM rang="1">lionel</PRENOM>
+        <AGE rang="2">31</AGE>
+    </list>
+    <list index="1">
+        <NOM rang="0">serge</NOM>
+        <PRENOM rang="1">serge</PRENOM>
+        <AGE rang="2">29</AGE>
+    </list>
+    <list index="2">
+        <NOM rang="0">ange</NOM>
+        <PRENOM rang="1">perez</PRENOM>
+        <AGE rang="2">32</AGE>
+    </list>
+    <list index="3">
+        <NOM rang="0">kouadio</NOM>
+        <PRENOM rang="1">ano</PRENOM>
+        <AGE rang="2">28</AGE>
+    </list>
+</lists>

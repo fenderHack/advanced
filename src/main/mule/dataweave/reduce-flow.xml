@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="reduce-flowSub_Flow" doc:id="157cf2d0-7a49-4da0-9945-8fa98ea612ab" >
+		<ee:transform doc:name="set payload" doc:id="4ee60792-a7fc-43e2-9ce5-05b55055ae41" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[
+  {
+    nom: "KONAN",
+    prenom: "Lionel",
+    age: 31
+    
+  }, 
+  {
+    nom: "KOUAME",
+    prenom: "Serge",
+    age: 20
+   
+  }, 
+  {
+    nom: "AFFOUE",
+    prenom: "Michelle",
+    age: 23
+  }
+]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="reduce" doc:id="ab31eb91-8cea-42dd-bd50-7e949bf5214b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import * from dw::core::Strings
+
+output application/json
+var reduced = payload map (item, index) -> (
+	valuesOf(item) reduce(it,acc="") -> ("'" ++ it ++ "'," ++ acc ++ "'")
+)[0 to -5] //   ====>>>> "'31','Lionel','KONAN'"
+// valuesOf(item) reduce(it,acc="") -> (acc ++ "," ++ it ++ "',")[0 to -2] ===>>> "'KONAN','Lionel','31'"
+
+---
+reduced]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<flow name="reduce-flowFlow" doc:id="5a55bb78-f70d-451d-8bcc-7b3a793377e8" >
+		<ee:transform doc:name="[2,3,4,5] reduce $ - $$" doc:id="d5458e9c-0e18-4a09-98f8-2ff8abcd9176" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[2,3,4,5] reduce $ - $$
+
+/**
+ * pareil que 
+ * 
+ * payload reduce ((it, acc) -> it - acc)
+ */]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="reduce-flowFlow1" doc:id="8d6f20e8-7ea8-4e0d-88c4-a028d25d660a" >
+		<ee:transform doc:name="Transform Message" doc:id="8ffd760f-e94d-46fb-8ce9-a8f93796885c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var x = [
+    {
+        "nom": "k",
+        "prenom": "l"
+    },{
+        "nom": "o",
+        "prenom": "p"
+    },{
+        "nom": "x",
+        "prenom": "j"
+    }
+]
+---
+x reduce((it,acc={}) -> (it ++ acc))
+/**
+ * {
+  "nom": "x",
+  "prenom": "j",
+  "nom": "o",
+  "prenom": "p",
+  "nom": "k",
+  "prenom": "l"
+}
+ * 
+ */
+//x reduce ((item,accumulator= {}) -> accumulator ++ item)
+/**
+ * 
+ * {
+  "nom": "k",
+  "prenom": "l",
+  "nom": "o",
+  "prenom": "p",
+  "nom": "x",
+  "prenom": "j"
+}
+ * 
+ */
+
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

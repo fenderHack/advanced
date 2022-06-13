@@ -1,0 +1,22 @@
+[
+  {
+    "nom": "quam",
+    "prenom": "id",
+    "age": 18,
+    "classe": {
+      "libelle": "aut",
+      "code": "sint",
+      "effectif": 94
+    }
+  },
+  {
+    "nom": "ipsam",
+    "prenom": "ea",
+    "age": 15,
+    "classe": {
+      "libelle": "minima",
+      "code": "laborum.",
+      "effectif": 24
+    }
+  }
+]

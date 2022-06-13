@@ -1,0 +1,38 @@
+{
+  "sampleData": {
+    "4316280d-7890-49ee-90f3-f2c3092922f5": {
+      "payload": "sample_data/list_json_6.json"
+    },
+    "95fe2440-1e5d-4ca2-adfb-59b5c48293fe": {
+      "payload": "sample_data/list_json_5.json"
+    },
+    "ab31eb91-8cea-42dd-bd50-7e949bf5214b": {
+      "payload": "sample_data/list_json_1.json"
+    },
+    "20249d1f-c76c-4b57-a2fe-04afb75be4bc": {
+      "payload": "sample_data/list_json.json"
+    },
+    "b8415dd3-7355-4b37-b169-e7e2177297aa": {
+      "payload": "sample_data/list_json_4.json"
+    },
+    "4078ca53-d2c1-4e76-b726-511615faa1fb": {
+      "payload": "sample_data/list_json_3.json"
+    },
+    "04bd0af6-fa20-47b7-89f2-7d6975749a9e": {
+      "payload": "sample_data/list_json_2.json"
+    },
+    "a54e683b-4037-496a-9826-3e16290dac0a": {
+      "payload": "sample_data/java_1.dwl",
+      "vars-groovyVar": "sample_data/java.dwl"
+    },
+    "52fba903-bbed-4cab-97d4-96528c483fa7": {
+      "payload": "sample_data/java_2.dwl"
+    },
+    "19d28413-78f2-4939-98c0-4bd050b7a311": {
+      "payload": "sample_data/java_3.dwl"
+    },
+    "5f009420-b050-4143-bb9b-6f0b4b0d35c9": {
+      "payload": "sample_data/name.xml"
+    }
+  }
+}

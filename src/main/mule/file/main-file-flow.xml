@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="cabd92a6-cc54-4d8f-9b84-76256caf0a9f" >
+		<file:connection workingDir="#[vars.uploadBasePath]" />
+	</file:config>
+	<flow name="get:\file\test:advanced-project-api-config">
+        <ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+    </flow>
+    <flow name="post:\file\upload:multipart\form-data:advanced-project-api-config">
+		<ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+		<logger level="INFO" doc:name="filename" doc:id="e720a0ab-2f1a-491c-856c-5251cffae338" message="filename  ===&gt;&gt;&gt;  #[payload.parts.'fichier'.headers.'Content-Disposition'.filename]"/>
+		<set-variable value='#["files/"]' doc:name="path" doc:id="fb751e4c-8757-4b30-95c9-072326580619" variableName="path"/>
+		<set-variable value="#[payload.parts.'fichier'.headers.'Content-Disposition'.filename]" doc:name="filename" doc:id="26fc2328-a732-4ba1-b53d-9ef94197188f" variableName="filename"/>
+		<file:write doc:id="3d31ea41-3188-47f5-af8b-70a2ed689e59" config-ref="File_Config" path='#[vars.path ++ "" ++ vars.filename]'>
+			<file:content ><![CDATA[#[output text/plain
+---
+payload.parts.'fichier'.content]]]></file:content>
+		</file:write>
+		<file:copy doc:name="Copy" doc:id="fbb49bb5-6c15-4f40-874f-f23211c2de55" config-ref="File_Config" sourcePath='#[vars.path ++ "" ++ vars.filename]' targetPath='#[vars.path ++ "copie/"]' renameTo="#[vars.filename]" overwrite="true"/>
+		<file:move doc:name="Move" doc:id="aafb0138-c7d3-43b9-97b5-243ee41ea88f" config-ref="File_Config" sourcePath='#[vars.path ++ "" ++ vars.filename]' targetPath='#[vars.path ++ "move/"]' renameTo="#[vars.filename]" overwrite="true"/>
+		<file:list doc:name="List" doc:id="928d6942-5c7f-4881-b436-7fed64829cf5" config-ref="File_Config" directoryPath='#[vars.path ++ "copie/"]'/>
+		<ee:transform doc:name="Transform Message" doc:id="baf3f583-871c-41eb-a95f-81d790bdd796" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+				
+				
+		
+		
+    </flow>
+</mule>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd">
+	<sub-flow name="now-_Flow" doc:id="bbd1a5f9-d3ac-494c-923b-919458a64fcd" >
+		<set-variable value='#["2022-05-16 10:09:23"]' doc:name="date" doc:id="5c01f9f3-be7e-47bc-a917-fa78c8b17970" variableName="date" />
+		<scripting:execute engine="ECMAScript" doc:name="Nashorn" doc:id="879878a1-636e-42e0-9901-0e3b66c8d786">
+			<scripting:code><![CDATA[log.info("In Nashorn " + (vars.date))
+result = {
+	"test": test,
+	"variable": vars.date
+}]]></scripting:code>
+			<scripting:parameters><![CDATA[#[{
+	test: [{
+		"nom": "konan",
+		"age": 20
+	},{
+		"nom": "koffi",
+		"age": 22
+	},{
+		"nom": "grace",
+		"age": 12
+	},{
+		"nom": "michelle",
+		"age": 15
+	}]
+}]]]></scripting:parameters>
+		</scripting:execute>
+		<logger level="INFO" doc:name="Logger" doc:id="2098b8e4-846d-4088-8085-6ce04eb980dd" message="nashorn payload  ====&gt;&gt;&gt;&gt;&gt;  #[payload]" />
+		<scripting:execute engine="Groovy" doc:id="f8faa7c4-182a-4730-877b-270c12e452d2" target="groovyVar" doc:name="Groovy">
+			<scripting:code ><![CDATA[
+import java.util.logging.Logger;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+Date dateNew = null;
+String dateToReturn = "";
+
+Logger logger = Logger.getLogger("");
+logger.info ("groovy =====>>>>>>>  "+ vars.date);
+dateNew =  formatter2.parse(vars.date);
+dateToReturn = formatter.format(dateNew);
+
+return dateToReturn;
+
+]]></scripting:code>
+			<scripting:parameters ><![CDATA[#[{
+	date: vars.date
+}]]]></scripting:parameters>
+		</scripting:execute>
+		<ee:transform doc:name="date" doc:id="a54e683b-4037-496a-9826-3e16290dac0a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var temps = "2022-05-16"
+var temps2 = "2022-05-16 10:09:23"
+---
+{
+	"now": now(),
+	"hour": now().hour,
+	"min": now().minutes,
+	"seconde": now().seconds,
+	"timezone": now().timezone,
+	"nanoseconds": now().nanoseconds,
+	"format": now() as String {format: "dd/MM/yyyy HH:mm:ss Z"},
+	"stringToDate": temps as Date {format: "yyyy-MM-dd"} as String {format: "dd/MM/yyyy"},
+	"stringToDate2": temps2 as LocalDateTime {format: "yyyy-MM-dd HH:mm:ss"} as String {format:"yyyy/MM/dd HH:mm:ss"},
+	"stringToDate3": vars.groovyVar
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="replace-flowSub_Flow" doc:id="fb705f32-5421-45bf-b7c3-da36923494a5" >
+		<ee:transform doc:name="replace with" doc:id="f8c8e393-7eb4-42ec-be7c-8cdc15dca832" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var maVar = "Test Doc and iT ok, Thanks"
+---
+maVar replace("T") with "t"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="split-flowSub_Flow" doc:id="c8239786-5380-471b-83ae-d414198e4091" >
+		<ee:transform doc:name="Transform Message" doc:id="31d6c187-1468-4f78-b845-8c3eb30b0a29" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var maVar = "Test Doc and iT ok, Thanks"
+---
+maVar splitBy  " "
+
+/**
+ * [
+ * "Test",
+ * "Doc",
+ * "and",
+ * "iT",
+ * "ok,",
+ * "Thanks"
+]
+ */]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="trim-flowSub_Flow" doc:id="6f76ce16-4c3f-4817-9be2-145c37fbdec4" >
+		<ee:transform doc:name="Transform Message" doc:id="a15e145a-7e5d-4a34-bf10-d6da6078dbd3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+var maVar = "  Test Doc and iT ok, Thanks "
+---
+trim(maVar)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+
+	<http:listener-config name="advanced-project-api-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+    <apikit:config name="advanced-project-api-config" api="resource::273828e7-af4f-4353-8c8b-24ef03c82f90:advanced-project-api:1.0.4:raml:zip:advanced-project-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    
+   
+    <flow name="advanced-project-api-main">
+        <http:listener config-ref="advanced-project-api-httpListenerConfig" path="/api/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+		<ee:transform doc:name="init var" doc:id="eb91324a-e764-417e-9bc4-696597fcdf0d" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="uploadPath" ><![CDATA[Mule::p('file.upload.path')]]></ee:set-variable>
+				<ee:set-variable variableName="env" ><![CDATA[%dw 2.0
+output application/java
+---
+Mule::p('env')]]></ee:set-variable>
+				<ee:set-variable variableName="uploadRoot" ><![CDATA[Mule::p('file.upload.root')]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<set-variable value='#[(vars.uploadRoot as String) ++ " - " ++ (vars.uploadPath as String)]' doc:name="uploadBasePath" doc:id="8ed1f451-0d43-4cc3-900d-eca3833a6e1a" variableName="uploadBasePath"/>
+		<logger level="INFO" doc:name="env" doc:id="4d13ff05-6278-4336-be04-82d7977d8eb5" message="env  ===&gt;&gt;  #[vars.env]  \n   uploadBasePath   =====&gt;&gt;&gt;&gt;    #[vars.uploadBasePath]"/>
+		<apikit:router config-ref="advanced-project-api-config" />
+    </flow>
+    <flow name="advanced-project-api-console">
+        <http:listener config-ref="advanced-project-api-httpListenerConfig" path="/console/*">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body>#[payload]</http:body>
+                <http:headers>#[vars.outboundHeaders default {}]</http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:console config-ref="advanced-project-api-config" />
+    </flow>
+    
+</mule>

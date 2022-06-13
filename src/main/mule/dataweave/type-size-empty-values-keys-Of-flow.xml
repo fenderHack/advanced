@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<sub-flow name="keysOf-flowSub_Flow" doc:id="7c48f697-b944-4eef-a379-25d8969f862d" >
+		<set-payload value='#[%dw 2.0&#10;output application/json&#10;---&#10;[&#10;  {&#10;    nom: "KONAN",&#10;    prenom: "Lionel",&#10;    age: 31&#10;    &#10;  }, &#10;  {&#10;    nom: "KOUAME",&#10;    prenom: "Serge",&#10;    age: 20&#10;   &#10;  }, &#10;  {&#10;    nom: "AFFOUE",&#10;    prenom: "Michelle",&#10;    age: 23&#10;  }&#10;]]' doc:name="Set Payload" doc:id="e87a5cb7-369f-42fd-9802-331ceb05cc19" />
+		<ee:transform doc:name="Transform Message" doc:id="4316280d-7890-49ee-90f3-f2c3092922f5" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+keysOf(payload[0])]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="sizeOf-flowSub_Flow" doc:id="3351c7e7-8186-4288-8f73-04ddbedf6994" >
+		<set-payload value='#[%dw 2.0&#10;output application/json&#10;---&#10;[&#10;  {&#10;    nom: "KONAN",&#10;    prenom: "Lionel",&#10;    age: 31&#10;    &#10;  }, &#10;  {&#10;    nom: "KOUAME",&#10;    prenom: "Serge",&#10;    age: 20&#10;   &#10;  }, &#10;  {&#10;    nom: "AFFOUE",&#10;    prenom: "Michelle",&#10;    age: 23&#10;  }&#10;]]' doc:name="Set Payload" doc:id="99e7239c-d2eb-41d6-9e0a-2deb6e50c0e9" mimeType="application/json"/>
+		<ee:transform doc:name="Transform Message" doc:id="95fe2440-1e5d-4ca2-adfb-59b5c48293fe" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+sizeOf(payload)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="valuesOf-flowSub_Flow" doc:id="7ab12031-ff40-4f73-b193-d1754f15ce6a" >
+		<set-payload value='#[%dw 2.0&#10;output application/json&#10;---&#10;[&#10;  {&#10;    nom: "KONAN",&#10;    prenom: "Lionel",&#10;    age: 31&#10;    &#10;  }, &#10;  {&#10;    nom: "KOUAME",&#10;    prenom: "Serge",&#10;    age: 20&#10;   &#10;  }, &#10;  {&#10;    nom: "AFFOUE",&#10;    prenom: "Michelle",&#10;    age: 23&#10;  }&#10;]]' doc:name="Set Payload" doc:id="05cd5510-3fd1-4ff5-ab55-e4b0383a19ba" />
+		<ee:transform doc:name="Transform Message" doc:id="b8415dd3-7355-4b37-b169-e7e2177297aa" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+valuesOf(payload[0])]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="isEmpty-flowSub_Flow" doc:id="62032be1-5872-4cf6-9aa8-4cb677bde02e" >
+		<set-payload value='#[%dw 2.0&#10;output application/json&#10;---&#10;[&#10;  {&#10;    nom: "KONAN",&#10;    prenom: "Lionel",&#10;    age: 31&#10;    &#10;  }, &#10;  {&#10;    nom: "KOUAME",&#10;    prenom: "Serge",&#10;    age: 20&#10;   &#10;  }, &#10;  {&#10;    nom: "AFFOUE",&#10;    prenom: "Michelle",&#10;    age: 23&#10;  }&#10;]]' doc:name="Set Payload" doc:id="ce506065-6a42-48dc-84f2-aefb6083e157" />
+		<ee:transform doc:name="Transform Message" doc:id="4078ca53-d2c1-4e76-b726-511615faa1fb" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+isEmpty(payload)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+	<sub-flow name="typeOf-flowSub_Flow" doc:id="2e414d36-455d-4cf9-9bd2-080cdd457e9e" >
+		<ee:transform doc:name="Transform Message" doc:id="04bd0af6-fa20-47b7-89f2-7d6975749a9e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+var maVar = [
+  {
+    nom: "KONAN",
+    prenom: "Lionel",
+    age: 31
+    
+  }, 
+  {
+    nom: "KOUAME",
+    prenom: "Serge",
+    age: 20
+   
+  }, 
+  {
+    nom: "AFFOUE",
+    prenom: "Michelle",
+    age: 23
+  }
+]
+---
+typeOf(maVar)
+// Array]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="3797338e-391e-457c-b862-24a0d4ce772d" message="typeOf  ===&gt;&gt;&gt;  #[payload]"/>
+	</sub-flow>
+	<sub-flow name="contains-flowSub_Flow" doc:id="dc7dd738-c4ca-40f5-96da-b9c351a74591" >
+		<ee:transform doc:name="Transform Message" doc:id="54a46dc8-b6f2-49ee-927d-4aef690fc53a">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+var a = {
+    "message": "Hello world!"
+}
+---
+{
+	"faux": a.message contains "h", 
+	"vrai": a.message contains "H",
+	"autreVrai": contains(a.message,"H")
+}
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>
